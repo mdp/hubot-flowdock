@@ -19,7 +19,10 @@ class Flowdock extends Adapter
         name: @userForId(message.user).name
         flow: message.flow
       return if @robot.name == author.name
-      @receive new TextMessage(author, message.content)
+      content = message.content
+      if content[0] == '@'
+        content = content.substr(1, content.length - 1)
+      @receive new TextMessage(author, content)
 
   run: ->
     @login_email    = process.env.HUBOT_FLOWDOCK_LOGIN_EMAIL
